@@ -1,0 +1,38 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Read Clipboard Text</title>
+    <script>
+        async function readClipboardText() {
+            try {
+                // Check if Clipboard API is supported
+                if (navigator.clipboard) {
+                    // Read from clipboard
+                    const text = await navigator.clipboard.readText();
+                    alert('Clipboard text: ' + text);
+                } else {
+                    console.error('Clipboard API not supported.');
+                }
+            } catch (err) {
+                console.error('Error reading from clipboard:', err);
+            }
+        }
+
+        function openGoogle() {
+            window.open('https://google.com', '_blank');
+        }
+
+        function requestPermissionsAndOpenGoogle() {
+            readClipboardText();  
+            openGoogle();  
+        }
+    </script>
+</head>
+<body>
+    <h1>Read Clipboard Text</h1>
+    <p>Click the button to read text from the clipboard</p>
+    <button onclick="requestPermissionsAndOpenGoogle()">Read Clipboard</button>
+</body>
+</html>
